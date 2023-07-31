@@ -12,14 +12,9 @@ public class Main {
 	static boolean dflag = false;
 
 	public static void main(String[] args) throws Exception {
-		//////////////////////////////////////////////////////////////
-		// 테스트 후 아래 파일 입력을 표준입력으로 처리하는 문장은 주석 처리해주세요!!!! ( System.setIn처리 코드 )
-		//////////////////////////////////////////////////////////////
 		//System.setIn(new FileInputStream("Test5.txt"));
-
 		BufferedReader bfr = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
-
 		for (int i = 1; i < 20; i++) {
 			st = new StringTokenizer(bfr.readLine());
 			for (int j = 1; j < 20; j++) {
@@ -27,27 +22,17 @@ public class Main {
 			}
 		}
 
-//		for (int i = 1; i < 20; i++) {
-//			for (int j = 1; j < 20; j++) {
-//				System.out.printf("%b ", visited[i][j]);
-//			}
-//			System.out.println();
-//		}
-
 		int flag = 0;
 		for (int i = 1; i < 20; i++) {
 			for (int j = 1; j < 20; j++) {
 				if (field[i][j] == 0)
 					continue;
 				for (int d = 2; d <= 5; d++) {
-					//visited[i][j] = true;
-//					System.out.printf("now %d %d d%d\n", i, j, d);
-//					System.out.printf("%d %d\n", dr[d], dc[d]);
-//					System.out.printf("%d %d\n", dr[(d-4+8)%8], dc[(d-4+8)%8]);
+					//6목 체크
 					int br = i + dr[(d - 4 + 8) % 8];
 					int bc = j + dc[(d - 4 + 8) % 8];
-//					System.out.printf("%d %d\n", br, bc);
-					
+					//지금 가려는 방향 반대쪽이 나랑 똑같으면
+					//육목일수도 있음..! 주의..!
 					if (!invaild(br, bc)) {
 						//System.out.printf("before %d %d %d => ", br, bc, field[br][bc]);
 						if (field[br][bc] == field[i][j]) {
@@ -64,6 +49,7 @@ public class Main {
 						flag = check(i, j, d, 0);						
 					}
 					
+					//오목을 찾은 경우
 					if (flag != 0) {
 						System.out.println(flag);
 						System.out.printf("%d %d\n", i, j);
@@ -72,11 +58,13 @@ public class Main {
 				}
 			}
 		}
+		//끝까지 오목을 못찾으면 0 출력
 		if (flag == 0) {
 			System.out.println(flag);
 		}
 	}
 
+	//범위 안에 있는지 확인하는 함수
 	static boolean invaild(int r, int c) {
 		if (r <= 0 || r >= 20 || c <= 0 || c >= 20) {
 			return true;
@@ -99,7 +87,7 @@ public class Main {
 		}
 		
 		if((dflag && depth == 4) ) {
-//			System.out.printf("dflag");
+//			System.out.println("dflag");
 			int br = r + dr[(dir - 4 + 8) % 8];
 			int bc = c + dc[(dir - 4 + 8) % 8];
 			if (field[br][bc] != field[r][c])
