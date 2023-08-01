@@ -20,6 +20,7 @@ public class Main {
 		ans = new int[M];
 		
 		choose(0);
+		System.out.println(sb);
 	}
 	
 	static void choose(int level) {
@@ -27,8 +28,7 @@ public class Main {
 			for(int i = 0; i<M; i++) {
 				sb.append(ans[i]).append(' ');
 			}
-			System.out.println(sb.toString());
-			sb.delete(0, sb.length());
+			sb.append('\n');
 			return;
 		}
 		
