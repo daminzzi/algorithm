@@ -23,7 +23,6 @@ public class Main {
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringBuilder sb = new StringBuilder();
 		StringTokenizer st;
 		
 		for(int i = 0; i<5; i++) {
@@ -42,8 +41,7 @@ xx:		for(int i = 0; i<5; i++) {
 				int k = Integer.parseInt(st.nextToken());
 				r = bingo[k].r;
 				c = bingo[k].c;
-				row[r]++;
-				col[c]++;
+				row[r]++; col[c]++;
 				if(r == c) dia[0]++;
 				if(r+c == 4) dia[1]++;
 				
@@ -60,8 +58,7 @@ xx:		for(int i = 0; i<5; i++) {
 				}
 			}
 		}
-		
-		
+
 	}
 	
 	static boolean isBingo(int a) {
