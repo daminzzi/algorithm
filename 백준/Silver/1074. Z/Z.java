@@ -26,18 +26,18 @@ public class Main {
 		int s = size/2;
 		
 		if(sr+s > r && sc+s > c) {
-			return ret += dq(sr, sc, s);
+			return ret + dq(sr, sc, s);
 		}
 		ret += s*s;
 		if(sr+s > r && sc+s <= c) {
-			return ret += dq(sr, sc+s, s);
+			return ret + dq(sr, sc+s, s);
 		}
 		ret += s*s;
 		if(sr+s <= r && sc+s > c) {
-			return ret += dq(sr+s, sc, s);
+			return ret + dq(sr+s, sc, s);
 		}
 		ret += s*s;
-		return ret += dq(sr+s, sc+s, s);
+		return ret + dq(sr+s, sc+s, s);
 	}
 
 }
