@@ -13,6 +13,7 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
+		
 		R = Integer.parseInt(st.nextToken());
 		C = Integer.parseInt(st.nextToken());
 		
@@ -24,23 +25,10 @@ public class Main {
 		cnt = 0;
 		
 		for(int i = 0; i<R; i++) {
-			field[i][0] = '-';
 			dfs(i, 0);
 		}
 		
 		System.out.println(cnt);
-	}
-	
-	static boolean isPossible(int nr, int nc) {
-		if(nr < 0 || nr>= R || nc <0 || nc>=C) {
-			return false;
-		}
-		
-		if(field[nr][nc] != '.') {
-			return false;
-		}
-		
-		return true;
 	}
 	
 	static boolean dfs(int r, int c) {		
@@ -54,7 +42,7 @@ public class Main {
 		for(int i = 0; i<3; i++) {
 			nr = r+direction[i];
 			nc = c+1;
-			if(!isPossible(nr, nc)) {
+			if(nr < 0 || nr>= R || nc <0 || nc>=C || field[nr][nc] != '.') {
 				continue;
 			}
 			field[nr][nc] = '-';
