@@ -1,7 +1,30 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
+	static int[] l1 = {2, 3, 5, 7};
+	static int[] l2 = {1, 3, 7, 9};
+	static int N;
+	static StringBuilder sb;
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		sb = new StringBuilder();
+		N = sc.nextInt();
+		
+		if(N == 1) {
+			for(int i: l1) {
+				sb.append(i).append('\n');
+			}
+			System.out.println(sb);
+			return;
+		}
+		
+		for(int i: l1) {
+			for(int j:l2) {
+				check(i, j, 2);
+			}
+		}
+		System.out.println(sb);
+	}
 	
 	static boolean isPrime(int n) {		
 		for(int i = 2; i*i<=n; i++) {
@@ -11,25 +34,18 @@ public class Main {
 		return true;
 	}
 	
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		StringBuilder sb = new StringBuilder();
-		int N = sc.nextInt();
-				
-xx:		for(int i = (int)Math.pow(10, N-1)*2; i<Math.pow(10, N); i++) {
-			int divisor = (int)Math.pow(10, N-1);
-			if(isPrime(i/divisor)) {
-				while(divisor >= 1) {
-					if(isPrime(i/divisor)) {
-						divisor /= 10;
-					}
-					else {
-						continue xx;
-					}
-				}
-				sb.append(i).append('\n');
-			}
+	static void check(int origin, int j, int depth) {
+		origin = origin*10 + j;
+		if(!isPrime(origin)) {
+			return;
 		}
-		System.out.println(sb);
+		if((depth == N)) {
+			sb.append(origin).append('\n');
+			return;
+		}
+		for(int k:l2) {
+			check(origin, k, depth+1);
+		}
 	}
+
 }
