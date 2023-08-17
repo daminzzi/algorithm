@@ -17,7 +17,7 @@ public class Main {
 		R = Integer.parseInt(st.nextToken());
 		C = Integer.parseInt(st.nextToken());
 		
-		field = new char[R][C];
+		field = new char[R][];
 		
 		for(int i = 0; i<R; i++) {
 			field[i] = br.readLine().toCharArray();
