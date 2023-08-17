@@ -45,13 +45,13 @@ public class Main {
 	
 	static boolean simulation() {
 		resetUnited();
-		LinkedList<Integer> uNum = new LinkedList<>();
+		int[] uNum = new int[N*N];
 		int uCnt = -1; //해당 날짜의 simulation에서 생성되는 연합의 수
 		for(int i = 0; i<N; i++) {
 			for(int j = 0; j<N; j++) {
 				if(united[i][j] == -1) {
 					int c = bfs(i, j, ++uCnt);
-					uNum.add(c);
+					uNum[uCnt] = c;
 				}
 			}
 		}
@@ -62,7 +62,7 @@ public class Main {
 				
 		for(int i = 0; i<N; i++) {
 			for(int j = 0; j<N; j++) {
-				A[i][j] = uNum.get(united[i][j]);
+				A[i][j] = uNum[united[i][j]];
 			}
 		}
 		
