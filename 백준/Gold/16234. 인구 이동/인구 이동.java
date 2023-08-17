@@ -29,7 +29,7 @@ public class Main {
 			st = new StringTokenizer(br.readLine());
 			for(int j = 0; j<N; j++) {
 				A[i][j] = Integer.parseInt(st.nextToken());
-				
+				united[i][j] = -1;
 			}
 		}
 		
@@ -44,7 +44,6 @@ public class Main {
 	}
 	
 	static boolean simulation() {
-		resetUnited();
 		int[] uNum = new int[N*N];
 		int uCnt = -1; //해당 날짜의 simulation에서 생성되는 연합의 수
 		for(int i = 0; i<N; i++) {
@@ -63,6 +62,7 @@ public class Main {
 		for(int i = 0; i<N; i++) {
 			for(int j = 0; j<N; j++) {
 				A[i][j] = uNum[united[i][j]];
+				united[i][j] = -1;
 			}
 		}
 		
@@ -99,13 +99,5 @@ public class Main {
 		}
 		
 		return sum/cnt;
-	}
-	
-	static void resetUnited() {
-		for(int i = 0; i<N; i++) {
-			for(int j = 0; j<N; j++) {
-				united[i][j] = -1;
-			}
-		}
 	}
 }
