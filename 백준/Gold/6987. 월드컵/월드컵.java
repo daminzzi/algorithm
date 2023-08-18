@@ -6,11 +6,10 @@ import java.util.StringTokenizer;
 public class Main {
 	static int [][] result;
 	static boolean [][] visited;
-	static StringBuilder sb;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
-		sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder();
 		// 각 나라 승+무+패 = 5
 		// 승무패 합이 30
 		// 승(+)패(-) 합이 0
@@ -31,7 +30,7 @@ xx:		while(T-- > 0) {
 					result[i][j] = Integer.parseInt(st.nextToken());
 				}
 				if(result[i][0]+result[i][1]+result[i][2] != 5) {
-					System.out.print("0 ");
+					sb.append("0 ");
 					continue xx;
 				}
 				w+=result[i][0];
@@ -41,7 +40,7 @@ xx:		while(T-- > 0) {
 			}
 			
 			if(w != l) {
-				System.out.print("0 ");
+				sb.append("0 ");
 				continue;
 			}
 			
@@ -58,20 +57,22 @@ xx:		while(T-- > 0) {
 			
 			boolean flag = dfs(0);
 			if(!flag) {
-				System.out.print("0 ");
+				sb.append("0 ");
+			}
+			else {
+				sb.append("1 ");
 			}
 		}
-		
+		System.out.println(sb);
 	}
 	
 	static boolean dfs(int depth) {
 		if(depth == 15) {
-			System.out.print("1 ");
 			return true;
 		}
 		boolean flag = false;
 		for (int i = 0; i < 6; i++) {
-			for (int j = 0; j < 6; j++) {
+			for (int j = i+1; j < 6; j++) {
                 if(i == j) continue;
                 if(visited[i][j]) continue;
 				if(result[i][0] > 0 && result[j][2] > 0) {
