@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 
 public class Main {
 	static int [][] result;
-	static boolean [][] visited;
+//	static boolean [][] visited;
     static int[] gx = {0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 3, 3, 4};
     static int[] gy = {1, 2, 3, 4, 5, 2, 3, 4, 5, 3, 4, 5, 4, 5, 5};
 	public static void main(String[] args) throws IOException {
@@ -24,7 +24,7 @@ public class Main {
 		int T = 4;
 xx:		while(T-- > 0) {
 			result = new int[6][3];
-			visited = new boolean[6][6];
+//			visited = new boolean[6][6];
 			st = new StringTokenizer(br.readLine());
 			int w = 0, d = 0, l = 0;
 			for(int i = 0; i<6; i++) {
@@ -51,11 +51,11 @@ xx:		while(T-- > 0) {
 //				continue;
 //			}
 			
-			for(int i = 0; i<6; i++) {
-				for(int j = 0; j<6; j++) {
-					visited[i][j] = false;
-				}
-			}
+//			for(int i = 0; i<6; i++) {
+//				for(int j = 0; j<6; j++) {
+//					visited[i][j] = false;
+//				}
+//			}
 			
 			boolean flag = dfs(0);
 			if(!flag) {
@@ -80,30 +80,30 @@ xx:		while(T-- > 0) {
 		if(result[i][0] > 0 && result[j][2] > 0) {
 			result[i][0]--;
 			result[j][2]--;
-			visited[i][j] = true;
+//			visited[i][j] = true;
 			flag = dfs(depth+1);
 			if(flag) return true;
-			visited[i][j] = false;
+//			visited[i][j] = false;
 			result[i][0]++;
 			result[j][2]++;
 		}
 		if(result[i][1] > 0 && result[j][1] > 0) {
 			result[i][1]--;
 			result[j][1]--;
-			visited[i][j] = true;
+//			visited[i][j] = true;
 			flag = dfs(depth+1);
 			if(flag) return true;
-			visited[i][j] = false;
+//			visited[i][j] = false;
 			result[i][1]++;
 			result[j][1]++;
 		}
 		if(result[i][2] > 0 && result[j][0] > 0) {
 			result[i][2]--;
 			result[j][0]--;	
-			visited[i][j] = true;
+//			visited[i][j] = true;
 			flag = dfs(depth+1);
 			if(flag) return true;
-			visited[i][j] = false;
+//			visited[i][j] = false;
 			result[i][2]++;
 			result[j][0]++;
 		}
