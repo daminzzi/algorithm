@@ -4,10 +4,10 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-	static int [][] result;
 //	static boolean [][] visited;
     static int[] gx = {0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 3, 3, 4};
     static int[] gy = {1, 2, 3, 4, 5, 2, 3, 4, 5, 3, 4, 5, 4, 5, 5};
+    static int[] win, lose, draw;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
@@ -17,20 +17,23 @@ public class Main {
 		// 승(+)패(-) 합이 0
 		int T = 4;
 xx:		while(T-- > 0) {
-			result = new int[6][3];
+			win = new int[6];
+			lose = new int[6];
+			draw = new int[6];
+			f = false;
 			st = new StringTokenizer(br.readLine());
 			int w = 0, d = 0, l = 0;
 			for(int i = 0; i<6; i++) {
-				for(int j = 0; j<3; j++) {
-					result[i][j] = Integer.parseInt(st.nextToken());
-				}
-				if(result[i][0]+result[i][1]+result[i][2] != 5) {
+				win[i] = Integer.parseInt(st.nextToken());
+				draw[i] = Integer.parseInt(st.nextToken());
+				lose[i] = Integer.parseInt(st.nextToken());
+				if(win[i]+lose[i]+draw[i] != 5) {
 					sb.append("0 ");
 					continue xx;
 				}
-				w+=result[i][0];
-				l+=result[i][2];
-				d+=result[i][1];
+				w+=win[i];
+				l+=lose[i];
+				d+=draw[i];
 			}
 			
 			if(w != l) {
@@ -42,8 +45,9 @@ xx:		while(T-- > 0) {
 				continue;
 			}
 			
-			boolean flag = dfs(0);
-			if(!flag) {
+			dfs(0);
+			
+			if(!f) {
 				sb.append("0 ");
 			}
 			else {
@@ -52,41 +56,41 @@ xx:		while(T-- > 0) {
 		}
 		System.out.println(sb);
 	}
-	
-	static boolean dfs(int depth) {
+	static boolean f = false;
+	static void dfs(int depth) {
 		if(depth == 15) {
-			return true;
+			f = true;
+			return;
 		}
-		boolean flag = false;
 		
 		int i = gx[depth];
 		int j = gy[depth];
 		
-		if(result[i][0] > 0 && result[j][2] > 0) {
-			result[i][0]--;
-			result[j][2]--;
-			flag = dfs(depth+1);
-			if(flag) return true;
-			result[i][0]++;
-			result[j][2]++;
+		if(win[i] > 0 && lose[j] > 0) {
+			win[i]--;
+			lose[j]--;
+			dfs(depth+1);
+			if(f) return;
+			win[i]++;
+			lose[j]++;
 		}
-		if(result[i][1] > 0 && result[j][1] > 0) {
-			result[i][1]--;
-			result[j][1]--;
-			flag = dfs(depth+1);
-			if(flag) return true;
-			result[i][1]++;
-			result[j][1]++;
+		if(draw[i] > 0 && draw[j] > 0) {
+			draw[i]--;
+			draw[j]--;
+			dfs(depth+1);
+			if(f) return;
+			draw[i]++;
+			draw[j]++;
 		}
-		if(result[i][2] > 0 && result[j][0] > 0) {
-			result[i][2]--;
-			result[j][0]--;	
-			flag = dfs(depth+1);
-			if(flag) return true;
-			result[i][2]++;
-			result[j][0]++;
+		if(lose[i] > 0 && win[j] > 0) {
+			lose[i]--;
+			win[j]--;	
+			dfs(depth+1);
+			if(f) return;
+			lose[i]++;
+			win[j]++;
 		}
 	
-		return false;
+		return;
 	}
 }
