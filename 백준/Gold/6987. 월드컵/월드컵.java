@@ -6,6 +6,8 @@ import java.util.StringTokenizer;
 public class Main {
 	static int [][] result;
 	static boolean [][] visited;
+    static int[] gx = {0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 3, 3, 4};
+    static int[] gy = {1, 2, 3, 4, 5, 2, 3, 4, 5, 3, 4, 5, 4, 5, 5};
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
@@ -71,45 +73,80 @@ xx:		while(T-- > 0) {
 			return true;
 		}
 		boolean flag = false;
-		for (int i = 0; i < 6; i++) {
-			for (int j = i+1; j < 6; j++) {
-                if(i == j) continue;
-                if(visited[i][j]) continue;
-				if(result[i][0] > 0 && result[j][2] > 0) {
-					result[i][0]--;
-					result[j][2]--;
-					visited[i][j] = true;
-					flag = dfs(depth+1);
-					if(flag) return true;
-					visited[i][j] = false;
-					result[i][0]++;
-					result[j][2]++;
-				}
-				if(result[i][1] > 0 && result[j][1] > 0) {
-					result[i][1]--;
-					result[j][1]--;
-					visited[i][j] = true;
-					flag = dfs(depth+1);
-					if(flag) return true;
-					visited[i][j] = false;
-					result[i][1]++;
-					result[j][1]++;
-				}
-				if(result[i][2] > 0 && result[j][0] > 0) {
-					result[i][2]--;
-					result[j][0]--;	
-					visited[i][j] = true;
-					flag = dfs(depth+1);
-					if(flag) return true;
-					visited[i][j] = false;
-					result[i][2]++;
-					result[j][0]++;
-				}
-			}
-			if (result[i][0] != 0 || result[i][1] != 0 || result[i][2] != 0) {
-				return false;
-			}
+		
+		int i = gx[depth];
+		int j = gy[depth];
+		
+		if(result[i][0] > 0 && result[j][2] > 0) {
+			result[i][0]--;
+			result[j][2]--;
+			visited[i][j] = true;
+			flag = dfs(depth+1);
+			if(flag) return true;
+			visited[i][j] = false;
+			result[i][0]++;
+			result[j][2]++;
 		}
+		if(result[i][1] > 0 && result[j][1] > 0) {
+			result[i][1]--;
+			result[j][1]--;
+			visited[i][j] = true;
+			flag = dfs(depth+1);
+			if(flag) return true;
+			visited[i][j] = false;
+			result[i][1]++;
+			result[j][1]++;
+		}
+		if(result[i][2] > 0 && result[j][0] > 0) {
+			result[i][2]--;
+			result[j][0]--;	
+			visited[i][j] = true;
+			flag = dfs(depth+1);
+			if(flag) return true;
+			visited[i][j] = false;
+			result[i][2]++;
+			result[j][0]++;
+		}
+		
+//		for (int i = 0; i < 6; i++) {
+//			for (int j = i+1; j < 6; j++) {
+////                if(i == j) continue;
+//                if(visited[i][j]) continue;
+//				if(result[i][0] > 0 && result[j][2] > 0) {
+//					result[i][0]--;
+//					result[j][2]--;
+//					visited[i][j] = true;
+//					flag = dfs(depth+1);
+//					if(flag) return true;
+//					visited[i][j] = false;
+//					result[i][0]++;
+//					result[j][2]++;
+//				}
+//				if(result[i][1] > 0 && result[j][1] > 0) {
+//					result[i][1]--;
+//					result[j][1]--;
+//					visited[i][j] = true;
+//					flag = dfs(depth+1);
+//					if(flag) return true;
+//					visited[i][j] = false;
+//					result[i][1]++;
+//					result[j][1]++;
+//				}
+//				if(result[i][2] > 0 && result[j][0] > 0) {
+//					result[i][2]--;
+//					result[j][0]--;	
+//					visited[i][j] = true;
+//					flag = dfs(depth+1);
+//					if(flag) return true;
+//					visited[i][j] = false;
+//					result[i][2]++;
+//					result[j][0]++;
+//				}
+//			}
+//			if (result[i][0] != 0 || result[i][1] != 0 || result[i][2] != 0) {
+//				return false;
+//			}
+//		}
 		
 		return false;
 	}
