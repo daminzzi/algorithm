@@ -20,24 +20,23 @@ public class Main {
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		
-		field = new char[N][];
+		field = new char[N][M];
 		visited = new int[N][M];
 		
 		for(int i =0; i<N; i++) {
-			field[i] = br.readLine().toCharArray();
-		}
-		
-		for(int i = 0; i<N; i++) {
+			String s = br.readLine();
 			for(int j = 0; j<M; j++) {
-				visited[i][j] = 0;
+				field[i][j] = s.charAt(j);
+				visited[i][j] = -1;
 			}
 		}
 		
-		System.out.println(bfs(0, 0));
+		bfs(0, 0);
+		System.out.println(visited[N-1][M-1]);
 	}
 	
 	static boolean isPossible(int nr, int nc) {
-		if(nr < 0  || nr >=N || nc <0 || nc >= M ) {
+		if(nr < 0  || nr >= N || nc <0 || nc >= M ) {
 			return false;
 		}
 		if(field[nr][nc] == '0') {
@@ -46,34 +45,36 @@ public class Main {
 		return true;
 	}
 	
-	static int bfs(int r, int c) {
+	static void bfs(int r, int c) {
 		
 		Queue<int[]> queue = new LinkedList<>();
 		queue.offer(new int[] {r, c});
 		visited[r][c] = 1;
 		int nr, nc;
-
+		int[] now;
+		
 		while(!queue.isEmpty()) {
-			int[] now = queue.poll();
-			
-			if(now[0] == N-1 && now[1] == M-1) {
+			now = queue.poll();
+			r = now[0];
+			c = now[1];
+			if(r == N-1 && c == M-1) {
 				break;
 			}
 			
 			for(int i = 0; i<4; i++) {
-				nr = now[0] + direction[i][0];
-				nc = now[1] + direction[i][1];
+				nr = r + direction[i][0];
+				nc = c + direction[i][1];
 			
 				if(!isPossible(nr, nc)) continue;
-				if(visited[nr][nc] != 0) continue;
-				
+				if(visited[nr][nc] != -1) continue;
+				if(nr == N-1 && nc == M-1) {
+					visited[nr][nc] = visited[r][c]+1;
+					return;
+				}
 				queue.offer(new int[] {nr, nc});
-				visited[nr][nc] = visited[now[0]][now[1]]+1;			
+				visited[nr][nc] = visited[r][c]+1;			
 			}
 		}
-		
-		
-		return visited[N-1][M-1];
 	}
 
 }
