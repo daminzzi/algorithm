@@ -9,8 +9,10 @@
 ### 분류
 
 그래프 이론, 최소 스패닝 트리
-
-### 문제 설명
+<details>
+ <summary>문제 설명</summary>
+ 
+### 문제
 
 <p>동물원에서 막 탈출한 원숭이 한 마리가 세상구경을 하고 있다. 그러다가 평화로운 마을에 가게 되었는데, 그곳에서는 알 수 없는 일이 벌어지고 있었다.</p>
 
@@ -29,4 +31,103 @@
 ### 출력 
 
  <p>첫째 줄에 없애고 남은 길 유지비의 합의 최솟값을 출력한다.</p>
+</details>
 
+---
+
+### 접근 아이디어
+<p>
+ 해당 문제에서 결국 해야하는 일은 마을의 길을 최소의 cost만 남겨두고 다 끊어내는 MST를 만드는 것이다.
+ 마을을 두 구역으로 나누는데에 있어서 한 구역에는 하나 이상의 집만 있으면 되기 때문에 MST를 만드는 도중 연결된 집이 N-1개면 MST를 만드는 것을 종료하고 탈출하는 방식으로 코드를 구현하였다.
+</p>
+
+### 작성 코드
+```
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
+
+public class Main {
+
+	static class Edge implements Comparable<Edge>{
+		int v;
+		int w;
+		int cost;
+		
+		public Edge(int v, int w, int cost) {
+			this.v = v;
+			this.w = w;
+			this.cost = cost;
+		}
+
+		@Override
+		public int compareTo(Edge o) {
+			return cost - o.cost;
+		}
+	}
+	
+	static int N, M;
+	static int[] parent;
+	static PriorityQueue<Edge> edge;
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		parent = new int[N];
+		edge = new PriorityQueue<>();
+		
+		for(int i = 0; i<M; i++) {
+			st = new StringTokenizer(br.readLine());
+			int a = Integer.parseInt(st.nextToken())-1;
+			int b = Integer.parseInt(st.nextToken())-1;
+			int c = Integer.parseInt(st.nextToken());
+			
+			edge.add(new Edge(a, b, c));
+		}
+		
+		initParent();
+		
+		int cnt = 1;
+		int sum = 0;
+		
+		while(cnt < N-1) {
+			Edge e = edge.poll();
+			if(find(e.v) != find(e.w)) {
+				union(e.v, e.w);
+				sum += e.cost;
+				cnt++;
+			}
+		}
+		System.out.println(sum);
+	}
+	
+	static void initParent() {
+		for(int i = 0; i<N; i++) {
+			parent[i] = i;
+		}
+	}
+	
+	static int find(int a) {
+		int pa = parent[a];
+		if(pa == a) {
+			return pa;
+		}
+		return find(pa);
+	}
+	
+	static void union(int a, int b) {
+		int pa = find(a);
+		int pb = find(b);
+		if(pa > pb) {
+			parent[pa] = pb;
+		}else {
+			parent[pb] = pa;
+		}
+	}
+
+}
+```
