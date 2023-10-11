@@ -32,3 +32,107 @@
 
  <p>첫째 줄에 채널 N으로 이동하기 위해 버튼을 최소 몇 번 눌러야 하는지를 출력한다.</p>
 
+ ---
+
+### 문제 요약
+
+리모컨 숫자 버튼 몇가지가 고장이 났고, 최소한의 버튼을 눌러서 목표 번호까지 이동하고자 한다.
+
+시작 번호는 100, 채널 번호는 0~무한대, 고장난 버튼 수는 0~10, 목표 채널 번호는 0~500,000이다.
+
+### 접근 아이디어
+
+일단 제일 첫번째로 생각할 수 있는 방법은 100에서 +, - 버튼 둘 중 하나만 눌러보면서 목표번호까지 이동하는 것이다. 이를 기준점으로 잡고 또 다른 방법을 탐색해보고 다른 방법들이 첫번째 방식보다 작다면 그 값이 버튼을 누르는 최소횟수일 것이다.
+
+또 다른 방법 중 하나는 목표로 하는 채널에 대해서 가장 가까운 누를 수 있는 채널을 찾아서 +, -로 목표 채널까지 이동하는 것이다. 이때 필요한 누르는 버튼의 횟수는 `(누를 수 있는 채널의 자릿수 + +,- 버튼을 누르는 횟수)`이다. 이 값이 첫 번째 방법으로 구한 횟수보다 작다면 이 값을 최소 횟수로 정할 수 있고, 이보다 크다면 목표채널에서 더 먼 숫자는 탐색을 할 필요는 없다. 더 먼 수를 찾는다면 버튼을 누르는 횟수는 늘어날 수 밖에 없기 때문에 첫 번째 방법으로 구한 횟수가 답이 될 것이다.
+
+### 작성 코드
+
+```java
+ import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class Main {
+
+	static String N, M;
+	static int ans;
+	static boolean[] isBroken = new boolean[10];
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		N = st.nextToken();
+		
+		st = new StringTokenizer(br.readLine());
+		int k = Integer.parseInt(st.nextToken());
+		if(k != 0) {
+			st = new StringTokenizer(br.readLine());
+		
+			for(int i = 0; i<k; i++) {
+				isBroken[Integer.parseInt(st.nextToken())] = true;
+			}
+		}		
+		
+		int num = Integer.parseInt(N);
+		ans = Math.abs(num-100); //+, -만 가지고 N까지 이동하는데 필요한 횟수
+		
+		if(k == 10) {
+			System.out.println(ans);
+			return;
+		}
+		
+		int diff = 0; //n과 수 사이의 차이
+		
+		while(true) {
+			int plus = num+diff;
+			int minus = num-diff;
+			String p = Integer.toString(plus);
+			String m = Integer.toString(minus);
+			int ptemp = Integer.MAX_VALUE; //해당 번호까지 이동에 필요한 횟수
+			int mtemp = Integer.MAX_VALUE; //해당 번호까지 이동에 필요한 횟수
+//			System.out.println(plus+" "+minus);
+			
+			if(isPossible(plus)) {
+				ptemp = p.length()+diff;
+			}
+			
+			if(minus >= 0 && isPossible(minus)) {
+				mtemp = m.length()+diff;
+			}
+			
+			int min = Math.min(ptemp, mtemp);
+			if(min < Integer.MAX_VALUE) {
+				if(min >= ans) break;
+//				System.out.println(ans+" "+p+" "+m);
+				System.out.println(min);
+				return;
+			}
+			
+			if(ans < diff+p.length()) {
+//				System.out.println(p+" "+m);
+				break;
+			}
+			
+//			ans = Math.min(ptemp, mtemp);
+			diff++;
+		}
+		
+		System.out.println(ans);
+		
+	}
+	
+	static boolean isPossible(int num) {
+		String str = Integer.toString(num);
+		for(int i = 0; i<str.length(); i++) {
+			if(isBroken[str.charAt(i)-'0']) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+}
+```
+
