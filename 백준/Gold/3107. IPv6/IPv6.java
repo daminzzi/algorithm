@@ -41,8 +41,6 @@ public class Main {
 		}
 		//맨 앞이 콜론 
 		address[cnt--] = String.valueOf(buf);
-//		while(cnt >= 0) {
-//		}
 
 		for (int i = 0; i < 7; i++) {
 			System.out.print(address[i].toString() + ":");
