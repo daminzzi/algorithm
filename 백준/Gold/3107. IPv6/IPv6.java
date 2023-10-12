@@ -39,7 +39,7 @@ public class Main {
 				buf[bidx--] = ip.charAt(i);
 			}
 		}
-		//맨 앞이 콜론 
+ 
 		address[cnt--] = String.valueOf(buf);
 
 		for (int i = 0; i < 7; i++) {
