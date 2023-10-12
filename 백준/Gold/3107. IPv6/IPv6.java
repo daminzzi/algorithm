@@ -33,15 +33,18 @@ public class Main {
 						//주소값에 0000 채우기
 						address[cnt--] = String.valueOf(buf);
 					}
+					colon--;
 					i--; //콜론 그룹에 있는 콜론을 다시 읽는 것을 방지하기 위해서 i--;
 				}
 			} else { //버퍼 뒤에서부터 채워서 000* -> 00** -> 0*** -> **** 이런식으로 버퍼가 채워짐 
 				buf[bidx--] = ip.charAt(i);
 			}
 		}
- 
+		
+		//버퍼에 남은 첫번째 주소 블록을 채워주고
 		address[cnt--] = String.valueOf(buf);
 
+		//답을 프린트
 		for (int i = 0; i < 7; i++) {
 			System.out.print(address[i].toString() + ":");
 		}
