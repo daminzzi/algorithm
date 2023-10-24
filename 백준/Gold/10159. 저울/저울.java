@@ -9,39 +9,39 @@ public class Main {
 	public static void main(String[] args) throws Exception{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
-		StringTokenizer st = new StringTokenizer(br.readLine());
+		StringTokenizer st;
 		
-		N = Integer.parseInt(st.nextToken());
+		N = Integer.parseInt(br.readLine());
 		
 		int M = Integer.parseInt(br.readLine());
 		
-		int[][] visited = new int[N+1][N+1];
+		boolean[][] visited = new boolean[N][N];
 		
 		for(int i = 0; i<M; i++) {
 			st = new StringTokenizer(br.readLine());
-			int v = Integer.parseInt(st.nextToken());
-			int w = Integer.parseInt(st.nextToken());
-			visited[v][w] = 1;
-			visited[w][v] = -1;
+			int v = Integer.parseInt(st.nextToken())-1;
+			int w = Integer.parseInt(st.nextToken())-1;
+			visited[v][w] = true;
 		}
 		
-		for(int j = 1; j<=N; j++) {
-			for(int i = 1; i<=N; i++) {
-				for(int k = 1; k<=N; k++) {
-					if(visited[i][j]== 0 || visited[j][k] == 0) continue;
+		for(int j = 0; j<N; j++) {
+			for(int i = 0; i<N; i++) {
+				for(int k = 0; k<N; k++) {
+					if(!visited[i][j] || !visited[j][k]) continue;
 					visited[i][k] = visited[i][j] == visited[j][k]? visited[i][j]:visited[i][k];
 				}
 			}
 		}
 		
 		//결과 출력
-		for(int i = 1; i<=N; i++) {
-			int cnt = 0;
-			for(int j = 1; j<=N; j++) {
+		int cnt;
+		for(int i = 0; i<N; i++) {
+			cnt = N-1;
+			for(int j = 0; j<N; j++) {
 				if(i==j)
 					continue;
-				if(visited[i][j] == 0)
-					cnt++;
+				if(visited[i][j] || visited[j][i])
+					cnt--;
 			}
 			sb.append(cnt).append('\n');
 		}
