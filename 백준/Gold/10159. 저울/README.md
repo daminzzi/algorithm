@@ -34,3 +34,81 @@
 
  <p>여러분은 N개의 줄에 결과를 출력해야 한다. i 번째 줄에는 물건 i 와 비교 결과를 알 수 없는 물건의 개수를 출력한다.</p>
 
+---
+
+### 문제 요약
+
+정점 간의 크기 정보가 주어질 때, 주어진 정보 만으로는 크기 비교를 확실히 할 수 없는 정점이 있을 수 있다. 1 > 3 과 1 > 2가 주어졌을 때, 1은 2와 3보다 크지만, 2와 3 중 누가 더 큰지는 주어진 정보만으로는 알 수 없다.
+
+이때 각 정점 별로 크기 비교 결과를 알 수 없는 정점의 수를 구하자.
+
+### 접근 아이디어
+
+어떤 정점 v보다 작은 정점은 v보다 큰 정점과 크기 비교가 가능하다. 반대도 마찬가지.
+
+따라서 초기 정보 입력 단계에서 v < w 라는 정보가 주어지면 visited[v][w]는 양수, visited[w][v]는 음수로 지정해주면 w < x 라는 정보가 있을 때 visited[v][w] == visited[w][x] 이므로 v는 x에 대한 크기 비교 결과를 얻을 수 있다. 음수인 경우에도 마찬가지..라고 쓰면서 근데 이거 음수는 안해봐도 되지 않나?
+
+… 코드 고치고 다시 제출해보니까 음수인 경우는 체크하지 않아도 된다.
+
+그렇다면 다시 한번 생각해보면 
+
+1. v와 w 사이의 관계를 directed graph로 생각하자
+2. v → w, w → x 라면 v → x 임.
+3. 플로이드 워샬 알고리즘을 사용하면 각 정점에 대한 방문 가능 여부를 정리할 수 있음
+4. 지금은 증가하는 경우만 체크했기 때문에 2번의 경우에서 x→v도 체크 가능하다는 것을 확인해줘야 한다. → 정점 개수 세면서 visited[v][w]와 visited[w][v] 둘다 확인하기
+
+### 작성 코드
+
+```java
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+
+public class BOJ10159 {
+
+	static int N;
+	
+	public static void main(String[] args) throws Exception{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
+		StringTokenizer st;
+		
+		N = Integer.parseInt(br.readLine());
+		
+		int M = Integer.parseInt(br.readLine());
+		
+		boolean[][] visited = new boolean[N][N];
+		
+		for(int i = 0; i<M; i++) {
+			st = new StringTokenizer(br.readLine());
+			int v = Integer.parseInt(st.nextToken())-1;
+			int w = Integer.parseInt(st.nextToken())-1;
+			visited[v][w] = true;
+		}
+		
+		for(int j = 0; j<N; j++) {
+			for(int i = 0; i<N; i++) {
+				for(int k = 0; k<N; k++) {
+					if(!visited[i][j] || !visited[j][k]) continue;
+					visited[i][k] = visited[i][j] == visited[j][k]? visited[i][j]:visited[i][k];
+				}
+			}
+		}
+		
+		//결과 출력
+		int cnt;
+		for(int i = 0; i<N; i++) {
+			cnt = N-1;
+			for(int j = 0; j<N; j++) {
+				if(i==j)
+					continue;
+				if(visited[i][j] || visited[j][i])
+					cnt--;
+			}
+			sb.append(cnt).append('\n');
+		}
+		System.out.println(sb);
+	}
+
+}
+```
