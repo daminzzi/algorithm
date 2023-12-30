@@ -1,86 +1,68 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.StringTokenizer;
-
-class Edge implements Comparable<Edge> {
-	int w;
-	int cost;
-
-	Edge(int w, int cost) {
-		this.w = w;
-		this.cost = cost;
-	}
-
-	@Override
-	public int compareTo(Edge o) {
-		return this.cost - o.cost;
-	}
-}
+import java.util.*;
 
 public class Main {
-	static int N, M;
-	static List<Edge>[] graph;
-	static int max = 0;
-	static int total = 0;
+    static class Edge implements Comparable<Edge> {
+        int w, c;
+        Edge(int w, int c) {
+            this.w = w;
+            this.c = c;
+        }
+        @Override
+        public int compareTo(Edge o) {
+            return Integer.compare(c, o.c);
+        }
+    }
 
-	public static void main(String[] args) throws NumberFormatException, IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    static List<List<Edge>> graph;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		N = Integer.parseInt(st.nextToken());
-		M = Integer.parseInt(st.nextToken());
+        int V = Integer.parseInt(st.nextToken());
+        int E = Integer.parseInt(st.nextToken());
 
-		total = 0;
-		graph = new ArrayList[N + 1];
-		for (int i = 0; i < graph.length; i++) {
-			graph[i] = new ArrayList<>();
-		}
+        graph = new ArrayList<>(V);
+        for(int i = 0; i<V; i++){
+            graph.add(new ArrayList<>());
+        }
 
-		int v, w, c;
-		for (int i = 0; i < M; i++) {
-			st = new StringTokenizer(br.readLine());
-			v = Integer.parseInt(st.nextToken());
-			w = Integer.parseInt(st.nextToken());
-			c = Integer.parseInt(st.nextToken());
+        for(int i = 0; i<E; i++){
+            st = new StringTokenizer(br.readLine());
+            int v = Integer.parseInt(st.nextToken())-1;
+            int w = Integer.parseInt(st.nextToken())-1;
+            int c = Integer.parseInt(st.nextToken());
+            graph.get(v).add(new Edge(w, c));
+            graph.get(w).add(new Edge(v, c));
+        }
 
-			graph[v].add(new Edge(w, c));
-			graph[w].add(new Edge(v, c));
-			total += c;
-		}
+        System.out.println(prim(0, V));
+    }
 
-		System.out.println(prim(1, N));
-	}
+    static int prim(int start, int n){
+        boolean[] visited = new boolean[n+1];
 
-	static int prim(int start, int n) {
-		boolean[] visited = new boolean[n + 1];
+        PriorityQueue<Edge> pq = new PriorityQueue<>();
+        pq.add(new Edge(start, 0));
+        int total = 0;
+        while(!pq.isEmpty()){
+            Edge edge = pq.poll();
+            int w = edge.w;
+            int c = edge.c;
+            if(visited[w]) continue;
 
-		PriorityQueue<Edge> pq = new PriorityQueue<>();
-		pq.offer(new Edge(start, 0));
+            visited[w] = true;
+            total += c;
 
-		int t = 0;
-		while (!pq.isEmpty()) {
-			Edge edge = pq.poll();
-			int v = edge.w;
-			int cost = edge.cost;
+            for(Edge e:graph.get(w)){
+                if(!visited[e.w]){
+                    pq.add(e);
+                }
+            }
+        }
 
-			if (visited[v])
-				continue;
-
-			visited[v] = true;
-			t += cost;
-
-			for (Edge e : graph[v]) {
-				if (!visited[e.w]) {
-					pq.add(e);
-				}
-			}
-		}
-
-		return t;
-	}
-
+        return total;
+    }
 }
