@@ -23,7 +23,7 @@ class Solution {
         int idx2 = len;
         
         answer = 0;
-        while(answer <= len*4){
+        while(answer <= total + len){
             if(temp == target) {
                 return answer;
             }
