@@ -4,7 +4,7 @@ class Solution {
     public int solution(int[][] jobs) {
         int answer = 0;
         Arrays.sort(jobs, (a, b) -> Integer.compare(a[0], b[0]));
-        PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> o1[1] - o2[1]);
+        PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> Integer.compare(o1[1], o2[1]));
         
         int index = 0;
         int count = 0;
