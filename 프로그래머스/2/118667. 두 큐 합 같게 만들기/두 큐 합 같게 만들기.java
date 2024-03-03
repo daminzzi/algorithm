@@ -4,11 +4,11 @@ class Solution {
         int answer = -2;
         int len = queue1.length;
         int total = len*2;
+        int limit = len*3-3;
         int[] queue = new int[total];
         System.arraycopy(queue1, 0, queue, 0, len);
         System.arraycopy(queue2, 0, queue, len, len);
         long sum = 0;
-        long target = 0;
         long temp = 0;
         for(int i = 0; i<len; i++){
             sum += queue1[i]+queue2[i];
@@ -17,22 +17,22 @@ class Solution {
         if(sum % 2 == 1){
             return -1;
         }
-        target = sum/2;
+        sum = sum/2;
         
         int idx1 = 0;
         int idx2 = len;
         
         answer = 0;
-        while(answer <= total + len){
-            if(temp == target) {
+        while(answer <= limit){
+            if(temp == sum) {
                 return answer;
             }
-            if(temp < target) {
+            if(temp < sum) {
                 temp += queue[idx2++];
                 idx2 %= total;
                 answer += 1;
             }
-            else if(temp > target){
+            else if(temp > sum){
                 temp -= queue[idx1++];
                 idx1 %= total;
                 answer += 1;
